@@ -1,5 +1,4 @@
 import { Routes, Route, Link } from "react-router-dom";
-import './App.css';
 import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
 import StudentInfo from "./pages/StudentInfo";
@@ -14,12 +13,12 @@ function App() {
         <Route path="/teacherinfo" element={<TeacherInfo />} />
         <Route path="/studentinfo" element={<StudentInfo />} />
       </Routes>
-      <div>
+      {/* <div>
         <Link to={"/signup"}>SignUp</Link>
         <Link to={"/signin"}>SignIn</Link>
         <Link to={"/teacherinfo"}>TeacherInfo</Link>
         <Link to={"/studentinfo"}>StudentInfo</Link>
-      </div>
+      </div> */}
     </div>
   );
 }

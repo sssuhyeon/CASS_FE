@@ -10,7 +10,10 @@ const SignIn = () => {
 
     const handleSetId = (e) => {
         setId(e.target.value);
-    }
+    };
+    const handleSetPw = (e) => {
+        setPw(e.target.value);
+    };
 
     const navigate = useNavigate();
 
@@ -36,7 +39,7 @@ const SignIn = () => {
 
                 <div className="inputTitle pw">비밀번호</div>
                 <div className="inputWrap">
-                    <input value={pw} onChange={(e) => setPw(e.target.value)} className="input" placeholder="비밀번호를 입력해주세요"></input>
+                    <input value={pw} onChange={handleSetPw} className="input" placeholder="비밀번호를 입력해주세요"></input>
                 </div>
 
                 <div className="btn">

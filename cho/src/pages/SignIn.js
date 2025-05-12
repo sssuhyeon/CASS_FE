@@ -18,7 +18,7 @@ const SignIn = () => {
     const navigate = useNavigate();
 
     return (
-        <div className="page">
+        <div className="signinPage">
             <div className="titleWrap">
                 <div className="welcome">
                     환영합니다 !

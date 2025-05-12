@@ -1,11 +1,11 @@
-.page {
+.signupPage {
     position: absolute;
     top: 0;
     bottom: 0;
     width: 100%;
     max-width: 350px;
     height: 100%;
-    max-height: 600px;
+    max-height: 620px;
     padding: 0 20px;
     margin-top: 50px;
     left: 50%;
@@ -13,25 +13,25 @@
     border: 0.5px solid #878787;
     border-radius: 7px;
     background-color: white;
-    
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
     color: #262626;
     font-weight: 500;
 }
 
 .titleWrap {
-    margin-top: 15px;
-    
+    margin-top: 30px;
 }
 
 .welcome {
     font-size: 20px;
 }
 
-.signup {
+.sign {
     font-size: 24px;
     font-weight: 600;
     margin-top: 15px;
-
 }
 
 .cass {
@@ -39,8 +39,32 @@
 }
 
 .contentWrap {
-    margin-top: 20px;
     flex: 1;
+}
+
+.nameAndRole {
+    display: flex;
+    margin-top: 10px;
+}
+
+.nameBlock, .roleBlock{
+    display: flex;
+    flex-direction: column;
+    flex:1;
+}
+
+.roleBlock {
+    margin-left: 15px;
+}
+
+.nameInput{
+    flex:1;
+}
+
+.roleSelect {
+    display: flex;
+    gap: 6px;
+    margin-top: 8px;
 }
 
 .inputTitle {
@@ -48,7 +72,7 @@
 }
 
 .inputWrap {
-    
+    display: flex;
     border-radius: 8px;
     padding: 16px;
     margin-top: 8px;
@@ -57,7 +81,7 @@
 }
 
 .inputWrap:focus-within {
-    border: 1px solid #9e30f4;
+    border: 1px solid #2b9cef;
 }
 
 .input {
@@ -73,12 +97,30 @@
     color: #dadada;
 }
 
+.id {
+    margin-top: 20px;
+}
+
+.pw {
+    margin-top: 25px;
+}
+
 .errorMessageWrap {
     margin-top: 8px;
     color: #ef0000;
     font-size: 12px;
 }
 
-.bottomBtn {
+.btn {
     margin-top: 20px;
+}
+
+.text_normal {
+    font-weight: normal;
+    color: #c7c7c7;
+}
+
+.text_highlight {
+    margin-left: 7px;
+    cursor: pointer;
 }

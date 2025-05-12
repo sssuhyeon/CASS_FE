@@ -9,8 +9,6 @@ const SignUp = () => {
     const [pw, setPw] = useState("");
     const [confirmPw, setConfirmPw] = useState("");
 
-    const isMatch = pw === confirmPw;
-
     const handleSetName = (e) => { setName(e.target.value); };
     const handleSetId = (e) => { setId(e.target.value); };
     const handleSetPw = (e) => { setPw(e.target.value); };
@@ -43,8 +41,8 @@ const SignUp = () => {
                     <div className="roleBlock">
                         <div className="inputTitle">유형</div>
                         <div className="roleSelect">
-                            <Button text={"선생님"} type={"teacher"} onClick={() => setRole("teacher")} isSelected={role==="teacher"} />
-                            <Button text={"학생"} type={"student"} onClick={() => setRole("student")} isSelected={role==="student"} />
+                            <Button text={"선생님"} type={"teacher"} onClick={() => setRole("teacher")} isSelected={role === "teacher"} />
+                            <Button text={"학생"} type={"student"} onClick={() => setRole("student")} isSelected={role === "student"} />
                         </div>
                     </div>
 
@@ -65,16 +63,11 @@ const SignUp = () => {
                     <input value={confirmPw} onChange={handleSetConfirmPw} className="input" placeholder="비밀번호를 다시 입력해주세요"></input>
                 </div>
 
-                {pw && confirmPw && !isMatch && (
-                    <div className="errorMessageWrap">
-                        비밀번호가 일치하지 않습니다.
-                    </div>
-                )}
-
-
-                <div className="btn">
-                    <Button text={"회원가입"} disabled={!name || !id || !pw || !confirmPw} />
+                <div className={`errorMessageWrap ${pw && pw !== confirmPw && confirmPw ? "visible" : ""}`}>
+                    비밀번호가 일치하지 않습니다.
                 </div>
+
+                <Button text={"회원가입"} disabled={!name || !id || !pw || !confirmPw} />
 
             </div>
 

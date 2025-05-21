@@ -4,6 +4,7 @@ import SignIn from "./pages/SignIn";
 import StudentInfo from "./pages/StudentInfo";
 import TeacherInfo from "./pages/TeacherInfo";
 import MainTeacher from "./pages/MainTeacher";
+import AddWorkbook from "./pages/AddWorkbook";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/teacherinfo" element={<TeacherInfo />} />
         <Route path="/studentinfo" element={<StudentInfo />} />
         <Route path="/mainteacher" element={<MainTeacher />} />
+        <Route path="/add-workbook" element={<AddWorkbook />} />
       </Routes>
 
     </div>

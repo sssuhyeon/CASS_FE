@@ -2,20 +2,35 @@ import './SignIn.css';
 import Button from "../component/Button";
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import { signIn } from '../api/auth';
 
 const SignIn = () => {
-    const [id, setId] = useState();
-    const [pw, setPw] = useState();
-
-    const handleSetId = (e) => {
-        setId(e.target.value);
-    };
-    const handleSetPw = (e) => {
-        setPw(e.target.value);
-    };
-
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
     const navigate = useNavigate();
+
+    const handleLogin = async () => {
+        if (!username || !password) {
+            setError('아이디와 비밀번호를 모두 입력해주세요.');
+            return;
+        }
+
+        const response = await signIn(username, password);
+        console.log('로그인 응답:', response);
+
+        if (response.success === 1) {
+            navigate('/mainteacher');
+        } else {
+            setError(response.message || '로그인에 실패했습니다.');
+        }
+    };
+
+    const handleKeyPress = (e) => {
+        if (e.key === 'Enter' && username && password) {
+            handleLogin();
+        }
+    };
 
     return (
         <div className="signinPage">
@@ -34,25 +49,42 @@ const SignIn = () => {
             <div className="contentWrap">
                 <div className="inputTitle id">아이디</div>
                 <div className="inputWrap">
-                    <input value={id} onChange={handleSetId} className="input" placeholder="아이디를 입력해주세요"></input>
+                    <input 
+                        value={username} 
+                        onChange={(e) => setUsername(e.target.value)} 
+                        onKeyDown={handleKeyPress}
+                        className="input" 
+                        placeholder="아이디를 입력해주세요"
+                    />
                 </div>
 
                 <div className="inputTitle pw">비밀번호</div>
                 <div className="inputWrap">
-                    <input value={pw} onChange={handleSetPw} className="input" placeholder="비밀번호를 입력해주세요"></input>
+                    <input 
+                        type="password"
+                        value={password} 
+                        onChange={(e) => setPassword(e.target.value)} 
+                        onKeyDown={handleKeyPress}
+                        className="input" 
+                        placeholder="비밀번호를 입력해주세요"
+                    />
                 </div>
 
+                {error && <div className="error-message">{error}</div>}
+
                 <div className="btn">
-                    <Button text={"로그인"} disabled={!id || !pw} />
+                    <Button 
+                        text={"로그인"} 
+                        onClick={handleLogin}
+                        disabled={!username || !password} 
+                    />
                 </div>
 
                 <div className="signup">
                     <span className="text_normal">아직 계정이 없으신가요 ?</span>
                     <span className="text_highlight" onClick={()=>navigate("/signup")}>회원가입</span>
                 </div>
-
             </div>
-
         </div>
     );
 };

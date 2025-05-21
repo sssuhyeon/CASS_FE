@@ -19,6 +19,7 @@ export const signIn = async (username, password) => {
         if (data.success === 1) {
             localStorage.setItem('token', data.token);
             localStorage.setItem('username', data.username);
+            localStorage.setItem('role', data.role);
         }
 
         return data;

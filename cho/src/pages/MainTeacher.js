@@ -1,184 +1,183 @@
-import React, { useState } from 'react';
-import './MainTeacher.css';
-import Header from '../component/Header';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { getDataTeacher } from "../api/teacher";
+import userIcon from "../img/user_icon.png";
+import "../pages/MainTeacher.css";
 
-export default function MainTeacher() {
-  const [workbookList, setWorkbookList] = useState([
-    {
-      id: 1,
-      title: "초등 수학 기초",
-      createdAt: "2024-03-19",
-      problems: [
-        { id: 1, title: "덧셈 연습 1", type: "객관식" },
-        { id: 2, title: "뺄셈 연습 1", type: "주관식" },
-        { id: 3, title: "곱셈 연습 1", type: "객관식" }
-      ]
-    },
-    {
-      id: 2,
-      title: "중등 수학 심화",
-      createdAt: "2024-03-19",
-      problems: [
-        { id: 4, title: "방정식의 이해", type: "객관식" },
-        { id: 5, title: "함수와 그래프", type: "서술형" }
-      ]
-    },
-    {
-      id: 3,
-      title: "고등 수학 문제집",
-      createdAt: "2024-03-20",
-      problems: [
-        { id: 6, title: "미분의 개념", type: "객관식" },
-        { id: 7, title: "적분의 활용", type: "서술형" }
-      ]
-    }
-  ]);
-
-  const [isDeleteMode, setIsDeleteMode] = useState(false);
-  const [selectedWorkbook, setSelectedWorkbook] = useState(null);
-
-  const studentList = [
-    {
-      id: 1,
-      name: "김학생",
-      studentId: "student123",
-      solvedCount: 15
-    },
-    {
-      id: 2,
-      name: "이학생",
-      studentId: "student456",
-      solvedCount: 8
-    },
-    {
-      id: 3,
-      name: "박학생",
-      studentId: "student789",
-      solvedCount: 20
-    }
-  ];
-
+const TeacherMain = () => {
+  const [pendingStudents, setPendingStudents] = useState([]);
+  const [matchingStudents, setMatchingStudents] = useState([]);
+  const [problems, setProblems] = useState([]);
+  
+  const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
 
-  const handleDeleteStudent = (studentId) => {
-    // TODO: 학생 삭제 API 호출
-    console.log('Delete student:', studentId);
-  };
+  // response 받아오기
+  useEffect(() => {
+    const token = localStorage.getItem("token");
 
-  const handleAddWorkbook = () => {
-    navigate('/add-workbook');
-  };
+    // 인증 토큰 없으면 로그인 페이지로 이동
+    if (!token) {
+      navigate("/signin");
+      return;
+    }
 
-  const handleDeleteWorkbook = (workbookId) => {
-    if (window.confirm('정말로 이 문제집을 삭제하시겠습니까?')) {
-      setWorkbookList(workbookList.filter(workbook => workbook.id !== workbookId));
-      if (selectedWorkbook?.id === workbookId) {
-        setSelectedWorkbook(null);
+    // 백엔드로 데이터 요청
+    const getInfo = async () => {
+      try {
+        const data = await getDataTeacher();
+
+        console.log(data);
+
+        // 대기 중인 학생 리스트
+        setPendingStudents(data.pending_students || []);
+        // 매칭된 학생 리스트
+        setMatchingStudents(data.matching_students || []);
+        // 등록한 문제 리스트
+        setProblems(data.problems || []);
+        
+      } catch (error) {
+        console.error("에러:", error);
       }
+    };
+
+    getInfo();
+  }, [navigate]);
+
+  const handleAcceptStudent = async (studentId) => {
+    // TODO: Implement accept student API call
+    console.log("Accept student:", studentId);
+    // After successful API call, update the pending students list
+    setPendingStudents(pendingStudents.filter(student => student.id !== studentId));
+    // Add the accepted student to matching students
+    const acceptedStudent = pendingStudents.find(student => student.id === studentId);
+    if (acceptedStudent) {
+      setMatchingStudents([...matchingStudents, acceptedStudent]);
     }
   };
 
-  const handleWorkbookClick = (workbook) => {
-    if (!isDeleteMode) {
-      setSelectedWorkbook(workbook);
-    }
+  const handleRejectStudent = async (studentId) => {
+    // TODO: Implement reject student API call
+    console.log("Reject student:", studentId);
+    // After successful API call, update the pending students list
+    setPendingStudents(pendingStudents.filter(student => student.id !== studentId));
   };
 
-  const toggleDeleteMode = () => {
-    setIsDeleteMode(!isDeleteMode);
-    setSelectedWorkbook(null);
+  const handleAcceptAllStudents = async () => {
+    // TODO: Implement accept all students API call
+    console.log("Accept all students");
+    // Add all pending students to matching students
+    setMatchingStudents([...matchingStudents, ...pendingStudents]);
+    // Clear pending students list
+    setPendingStudents([]);
+    // Close modal
+    setShowModal(false);
   };
 
   return (
     <div className="main-teacher">
-      <Header />
-      <div className="content-container">
-        <div className="workbook-section">
-          <div className="section-header">
-            <h2>문제집 목록</h2>
-            <div className="header-buttons">
-              <button 
-                className={`delete-mode-button ${isDeleteMode ? 'active' : ''}`}
-                onClick={toggleDeleteMode}
-              >
-                {isDeleteMode ? '삭제 완료' : '삭제'}
-              </button>
-              <button 
-                className="add-button"
-                onClick={handleAddWorkbook}
-              >
-                + 새 문제집
-              </button>
-            </div>
-          </div>
-          <div className="workbook-list">
-            {workbookList.map(workbook => (
-              <div 
-                key={workbook.id} 
-                className={`workbook-item ${selectedWorkbook?.id === workbook.id ? 'selected' : ''}`}
-                onClick={() => handleWorkbookClick(workbook)}
-              >
-                <div className="workbook-info">
-                  <span className="workbook-title">{workbook.title}</span>
-                  <span className="workbook-date">{workbook.createdAt}</span>
-                </div>
-                {isDeleteMode && (
-                  <div className="workbook-actions">
-                    <button 
-                      className="delete-button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleDeleteWorkbook(workbook.id);
-                      }}
-                    >
-                      삭제
-                    </button>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
 
-        <div className="right-section">
-          <div className="section-header">
-            <h2>
-              {selectedWorkbook ? `${selectedWorkbook.title}의 문제 목록` : '등록된 학생'}
-            </h2>
+      {/* 헤더 */}
+      <div className="header">
+        <div className="logo" onClick={() => navigate("/teacher/main")}>CASS</div>
+        <div className="header-right">
+          <div className="user-plus" onClick={() => setShowModal(true)}>
+            ＋
+            {pendingStudents.length > 0 && (
+              <span className="notification-badge">{pendingStudents.length}</span>
+            )}
           </div>
-          {selectedWorkbook ? (
-            <div className="problem-list">
-              {selectedWorkbook.problems.map(problem => (
-                <div key={problem.id} className="problem-item">
-                  <div className="problem-info">
-                    <span className="problem-title">{problem.title}</span>
-                    <span className="problem-type">{problem.type}</span>
-                  </div>
-                </div>
-              ))}
+          <img src={userIcon} alt="User Icon" className="user-icon" />
+        </div>
+      </div>
+
+      {/* 모달 */}
+      {showModal && (
+        <div className="modal-overlay" onClick={() => setShowModal(false)}>
+          <div className="modal-content" onClick={e => e.stopPropagation()}>
+            <div className="modal-header">
+              <h2 className="modal-title">학생 등록 요청</h2>
+              <button className="close-button" onClick={() => setShowModal(false)}>×</button>
             </div>
-          ) : (
-            <div className="student-list">
-              {studentList.map(student => (
-                <div key={student.id} className="student-item">
-                  <div className="student-info">
-                    <span className="student-name">{student.name}</span>
-                    <span className="student-id">{student.studentId}</span>
-                    <span className="solved-count">해결한 문제: {student.solvedCount}개</span>
-                  </div>
-                  <button 
-                    className="delete-button"
-                    onClick={() => handleDeleteStudent(student.id)}
+            
+            {pendingStudents.length > 0 ? (
+              <>
+                <div className="modal-actions">
+                  <button
+                    className="accept-all-button"
+                    onClick={handleAcceptAllStudents}
                   >
-                    삭제
+                    전체 수락
                   </button>
                 </div>
-              ))}
-            </div>
-          )}
+                <div className="modal-student-list">
+                  {pendingStudents.map((student) => (
+                    <li key={student.id} className="modal-student-item">
+                      <div className="student-info">
+                        <div className="student-name">{student.name}</div>
+                        <div className="student-username">@{student.username}</div>
+                      </div>
+                      <div className="student-actions">
+                        <button
+                          className="accept-button"
+                          onClick={() => handleAcceptStudent(student.id)}
+                        >
+                          수락
+                        </button>
+                        <button
+                          className="reject-button"
+                          onClick={() => handleRejectStudent(student.id)}
+                        >
+                          거절
+                        </button>
+                      </div>
+                    </li>
+                  ))}
+                </div>
+              </>
+            ) : (
+              <div className="no-requests">
+                현재 대기 중인 학생이 없습니다.
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* 메인 페이지 */}
+      <div className="teacherMain">
+        {/* 왼쪽 섹션 - 문제 리스트 */}
+        <div className="section">
+          <h2>문제 리스트</h2>
+          <ul className="problem-list">
+            {problems.map((problem) => (
+              <li key={problem.id} className="problem-item">
+                <div className="problem-title">{problem.title}</div>
+              </li>
+            ))}
+            {problems.length === 0 && (
+              <div className="no-items">등록된 문제가 없습니다.</div>
+            )}
+          </ul>
+        </div>
+
+        {/* 오른쪽 섹션 - 수강 학생 */}
+        <div className="section">
+          <h2>수강 학생</h2>
+          <ul className="student-list">
+            {matchingStudents.map((student) => (
+              <li key={student.id} className="student-item">
+                <div className="student-name">{student.name}</div>
+              </li>
+            ))}
+            {matchingStudents.length === 0 && (
+              <div className="no-items">등록된 학생이 없습니다.</div>
+            )}
+          </ul>
         </div>
       </div>
     </div>
   );
-}
+};
+
+export default TeacherMain;

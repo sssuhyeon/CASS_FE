@@ -20,7 +20,13 @@ const SignIn = () => {
         console.log('로그인 응답:', response);
 
         if (response.success === 1) {
-            navigate('/mainteacher');
+            if(response.role === 'teacher'){
+                navigate('/teacher/main');
+            }
+            else if(response.role === 'student'){
+                navigate('/student/main');
+            }
+
         } else {
             setError(response.message || '로그인에 실패했습니다.');
         }

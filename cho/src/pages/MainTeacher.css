@@ -1,383 +1,293 @@
-.main-teacher {
-  min-height: 100vh;
-  background-color: #f5f5f5;
+.user-icon {
+    width: 60px;
+    height: 60px;
 }
 
-.content-container {
-  display: flex;
-  padding: 2rem;
-  gap: 2rem;
-  max-width: 1400px;
-  margin: 0 auto;
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem 3rem;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    height: 50px;
 }
 
-.workbook-section,
-.right-section {
-  flex: 1;
-  background-color: white;
-  border-radius: 8px;
-  padding: 1.5rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  min-height: 400px;
-  max-height: 500px;
-  display: flex;
-  flex-direction: column;
+.logo {
+    font-size: 32px;
+    font-weight: bold;
+    cursor: pointer;
 }
 
-.section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1.5rem;
-  padding-bottom: 1rem;
-  border-bottom: 2px solid #f0f0f0;
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
 }
 
-.section-header h2 {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #333;
-  margin: 0;
+.user-plus {
+    font-size: 32px;
+    font-weight: 500;
+    cursor: pointer;
+    position: relative;
+    padding: 5px 10px;
+    border-radius: 50%;
+    transition: background-color 0.3s;
 }
 
-.header-buttons {
-  display: flex;
-  gap: 0.5rem;
+.user-plus:hover {
+    background-color: #f0f0f0;
 }
 
-.edit-mode-button {
-  background-color: #6c757d;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: 500;
-  transition: all 0.2s ease;
+.notification-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: #ff4444;
+    color: white;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.edit-mode-button:hover {
-  background-color: #5a6268;
-}
-
-.edit-mode-button.active {
-  background-color: #28a745;
-}
-
-.edit-mode-button.active:hover {
-  background-color: #218838;
-}
-
-.delete-mode-button {
-  background-color: #dc3545;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: 500;
-  transition: all 0.2s ease;
-}
-
-.delete-mode-button:hover {
-  background-color: #c82333;
-}
-
-.delete-mode-button.active {
-  background-color: #28a745;
-}
-
-.delete-mode-button.active:hover {
-  background-color: #218838;
-}
-
-.add-button {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: 500;
-  transition: background-color 0.2s ease;
-}
-
-.add-button:hover {
-  background-color: #0056b3;
-}
-
-/* 문제집 리스트 스타일 */
-.workbook-list {
-  flex: 1;
-  overflow-y: auto;
-  padding-right: 0.5rem;
-}
-
-.workbook-item {
-  background-color: #f8f9fa;
-  border-radius: 6px;
-  padding: 1rem;
-  margin-bottom: 0.8rem;
-  transition: all 0.2s ease;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  cursor: pointer;
-}
-
-.workbook-item:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.workbook-item.selected {
-  background-color: #e3f2fd;
-  border: 1px solid #90caf9;
-}
-
-.workbook-info {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex: 1;
-  margin-right: 1rem;
-}
-
-.workbook-title {
-  font-weight: bold;
-  font-size: 1.1rem;
-  color: #333;
-}
-
-.workbook-date {
-  color: #888;
-  font-size: 0.9rem;
-}
-
-.workbook-actions {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.edit-button {
-  background-color: #ffc107;
-  color: #000;
-  border: none;
-  padding: 0.4rem 0.8rem;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition: background-color 0.2s ease;
-}
-
-.edit-button:hover {
-  background-color: #e0a800;
-}
-
-/* 문제 리스트 스타일 */
-.problem-list {
-  flex: 1;
-  overflow-y: auto;
-  padding-right: 0.5rem;
-}
-
-.problem-item {
-  background-color: #f8f9fa;
-  border-radius: 6px;
-  padding: 1rem;
-  margin-bottom: 0.8rem;
-  transition: all 0.2s ease;
-}
-
-.problem-item:hover {
-  transform: translateX(2px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.problem-info {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.problem-title {
-  font-weight: bold;
-  font-size: 1.1rem;
-  color: #333;
-}
-
-.problem-type {
-  background-color: #e9ecef;
-  color: #495057;
-  padding: 0.2rem 0.5rem;
-  border-radius: 4px;
-  font-size: 0.9rem;
-}
-
-/* 학생 리스트 스타일 */
-.student-list {
-  flex: 1;
-  overflow-y: auto;
-  padding-right: 0.5rem;
-}
-
-.student-item {
-  background-color: #f8f9fa;
-  border-radius: 6px;
-  padding: 1rem;
-  margin-bottom: 0.8rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  transition: all 0.2s ease;
-}
-
-.student-item:hover {
-  transform: translateX(2px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.student-info {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.student-name {
-  font-weight: bold;
-  font-size: 1.1rem;
-  color: #333;
-}
-
-.student-id {
-  color: #666;
-  font-size: 0.9rem;
-}
-
-.solved-count {
-  color: #28a745;
-  font-weight: 500;
-  font-size: 0.9rem;
-}
-
-.delete-button {
-  background-color: #dc3545;
-  color: white;
-  border: none;
-  padding: 0.4rem 0.8rem;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition: background-color 0.2s ease;
-}
-
-.delete-button:hover {
-  background-color: #c82333;
-}
-
-/* 모달 스타일 */
 .modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
 }
 
 .modal-content {
-  background-color: white;
-  border-radius: 8px;
-  padding: 2rem;
-  width: 400px;
-  max-width: 90%;
+    background-color: white;
+    padding: 2rem;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 80vh;
 }
 
 .modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
 }
 
-.modal-header h2 {
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin: 0;
+.modal-title {
+    font-size: 1.5rem;
+    font-weight: bold;
 }
 
 .close-button {
-  background: none;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
-  color: #666;
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    line-height: 1;
+    color: #666;
+    transition: color 0.2s;
 }
 
 .close-button:hover {
-  color: #333;
+    color: #333;
 }
 
-.modal-body {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+.modal-actions {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid #f0f0f0;
+    margin-bottom: 1rem;
 }
 
-.workbook-input {
-  padding: 0.8rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 1rem;
+.accept-all-button {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
 }
 
-.workbook-input:focus {
-  outline: none;
-  border-color: #007bff;
+.accept-all-button:hover {
+    background-color: #45a049;
 }
 
-.submit-button {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 0.8rem;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: 500;
-  transition: background-color 0.2s ease;
+.modal-student-list {
+    max-height: 300px;
+    overflow-y: auto;
 }
 
-.submit-button:hover {
-  background-color: #0056b3;
+.modal-student-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem;
+    border-bottom: 1px solid #f0f0f0;
+    transition: background-color 0.2s;
 }
 
-/* 스크롤바 스타일 */
-.workbook-list::-webkit-scrollbar,
+.modal-student-item:hover {
+    background-color: #f8f9fa;
+}
+
+.student-info {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex-grow: 1;
+}
+
+.student-username {
+    color: #666;
+    font-size: 1.5rem;
+    margin-left: 1rem;
+}
+
+.student-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.accept-button, .reject-button {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.accept-button {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.accept-button:hover {
+    background-color: #45a049;
+}
+
+.reject-button {
+    background-color: #f44336;
+    color: white;
+}
+
+.reject-button:hover {
+    background-color: #da190b;
+}
+
+.no-requests, .no-items {
+    text-align: center;
+    padding: 11.5rem;
+    color: #666;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    margin-top: 1rem;
+}
+
+.main-teacher {
+    background-color: #f5f5f5;
+    min-height: 100vh;
+}
+
+.teacherMain {
+    display: flex;
+    gap: 2rem;
+    padding: 2rem;
+    height: calc(100vh - 50px - 4rem);
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.section {
+    flex: 1;
+    background: white;
+    border-radius: 10px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    height: 500px;
+}
+
+.section h2 {
+    font-size: 1.5rem;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    border-bottom: 2px solid #f0f0f0;
+    margin: 0;
+}
+
+.problem-list, .student-list {
+    list-style: none;
+    padding: 0;
+    margin-top: 1rem;
+    height: calc(100% - 50px - 1rem);
+    overflow-y: auto;
+}
+
+.problem-item, .student-item {
+    padding: 0.75rem;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+    background-color: #f8f9fa;
+    transition: all 0.2s;
+    border: 1px solid #eee;
+}
+
+.problem-item:hover, .student-item:hover {
+    background-color: #f0f0f0;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.problem-title {
+    font-weight: 500;
+    color: #333;
+}
+
+.student-name {
+    margin-left: 1rem;
+    font-size: 25px;
+    font-weight: 500;
+}
+
+/* 스크롤바 스타일링 */
+.problem-list::-webkit-scrollbar,
 .student-list::-webkit-scrollbar,
-.problem-list::-webkit-scrollbar {
-  width: 8px;
+.modal-student-list::-webkit-scrollbar {
+    width: 6px;
 }
 
-.workbook-list::-webkit-scrollbar-track,
+.problem-list::-webkit-scrollbar-track,
 .student-list::-webkit-scrollbar-track,
-.problem-list::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  border-radius: 4px;
+.modal-student-list::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
 }
 
-.workbook-list::-webkit-scrollbar-thumb,
+.problem-list::-webkit-scrollbar-thumb,
 .student-list::-webkit-scrollbar-thumb,
-.problem-list::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 4px;
+.modal-student-list::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 3px;
 }
 
-.workbook-list::-webkit-scrollbar-thumb:hover,
+.problem-list::-webkit-scrollbar-thumb:hover,
 .student-list::-webkit-scrollbar-thumb:hover,
-.problem-list::-webkit-scrollbar-thumb:hover {
-  background: #666;
+.modal-student-list::-webkit-scrollbar-thumb:hover {
+    background: #999;
 }

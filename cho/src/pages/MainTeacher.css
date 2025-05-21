@@ -148,14 +148,17 @@
 .student-info {
     display: flex;
     align-items: center;
-    gap: 1.5rem;
-    flex-grow: 1;
+    gap: 1rem;
+}
+
+.student-name {
+    font-size: 1.1rem;
+    font-weight: 500;
 }
 
 .student-username {
     color: #666;
-    font-size: 1.5rem;
-    margin-left: 1rem;
+    font-size: 1.1rem;
 }
 
 .student-actions {
@@ -246,6 +249,9 @@
     background-color: #f8f9fa;
     transition: all 0.2s;
     border: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .problem-item:hover, .student-item:hover {
@@ -254,14 +260,14 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
-.problem-title {
+.problem-title, .student-info {
+    font-size: 1.1rem;
     font-weight: 500;
     color: #333;
 }
 
 .student-name {
-    margin-left: 1rem;
-    font-size: 25px;
+    font-size: 1.1rem;
     font-weight: 500;
 }
 

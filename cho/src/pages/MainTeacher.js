@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getDataTeacher } from "../api/teacher";
+import { getDataTeacher, matchingAccept, matchingReject } from "../api/teacher";
 import userIcon from "../img/user_icon.png";
 import "../pages/MainTeacher.css";
 
@@ -8,34 +8,24 @@ const TeacherMain = () => {
   const [pendingStudents, setPendingStudents] = useState([]);
   const [matchingStudents, setMatchingStudents] = useState([]);
   const [problems, setProblems] = useState([]);
-  
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
 
-  // response 받아오기
   useEffect(() => {
     const token = localStorage.getItem("token");
 
-    // 인증 토큰 없으면 로그인 페이지로 이동
     if (!token) {
       navigate("/signin");
       return;
     }
 
-    // 백엔드로 데이터 요청
+    // 백엔드로 문제, 대기 중인 학생, 매칭된 학생 데이터 요청
     const getInfo = async () => {
       try {
         const data = await getDataTeacher();
-
-        console.log(data);
-
-        // 대기 중인 학생 리스트
         setPendingStudents(data.pending_students || []);
-        // 매칭된 학생 리스트
         setMatchingStudents(data.matching_students || []);
-        // 등록한 문제 리스트
         setProblems(data.problems || []);
-        
       } catch (error) {
         console.error("에러:", error);
       }
@@ -44,39 +34,70 @@ const TeacherMain = () => {
     getInfo();
   }, [navigate]);
 
+  // 학생 등록 요청 수락
   const handleAcceptStudent = async (studentId) => {
-    // TODO: Implement accept student API call
-    console.log("Accept student:", studentId);
-    // After successful API call, update the pending students list
-    setPendingStudents(pendingStudents.filter(student => student.id !== studentId));
-    // Add the accepted student to matching students
-    const acceptedStudent = pendingStudents.find(student => student.id === studentId);
-    if (acceptedStudent) {
-      setMatchingStudents([...matchingStudents, acceptedStudent]);
+    try {
+      const data = await matchingAccept(studentId);
+
+      if (data.success === 0) {
+        alert(data.message);
+        return;
+      }
+
+      alert(data.message);
+      const updatedData = await getDataTeacher();
+
+      setPendingStudents(updatedData.pending_students || []);
+      setMatchingStudents(updatedData.matching_students || []);
+      setProblems(updatedData.problems || []);
+    }
+    catch (error) {
+      console.error('학생 수락 실패:', error);
     }
   };
 
+  // 학생 등록 요청 거절
   const handleRejectStudent = async (studentId) => {
-    // TODO: Implement reject student API call
-    console.log("Reject student:", studentId);
-    // After successful API call, update the pending students list
-    setPendingStudents(pendingStudents.filter(student => student.id !== studentId));
+    try {
+      const data = await matchingReject(studentId);
+
+      if (data.success === 0) {
+        alert(data.message);
+        return;
+      }
+
+      alert(data.message);
+      const updatedData = await getDataTeacher();
+
+      setPendingStudents(updatedData.pending_students || []);
+      setMatchingStudents(updatedData.matching_students || []);
+      setProblems(updatedData.problems || []);
+    }
+    catch (error) {
+      console.error('학생 거절 실패:', error);
+    }
   };
 
+  // 모든 학생 등록 요청 수락
   const handleAcceptAllStudents = async () => {
-    // TODO: Implement accept all students API call
-    console.log("Accept all students");
-    // Add all pending students to matching students
-    setMatchingStudents([...matchingStudents, ...pendingStudents]);
-    // Clear pending students list
-    setPendingStudents([]);
-    // Close modal
-    setShowModal(false);
+    try {
+      for (const student of pendingStudents) {
+        await matchingAccept(student.id);
+      }
+  
+      // 한 번만 데이터 갱신
+      const updatedData = await getDataTeacher();
+      setPendingStudents(updatedData.pending_students || []);
+      setMatchingStudents(updatedData.matching_students || []);
+      setProblems(updatedData.problems || []);
+
+    } catch (error) {
+      console.error("전체 학생 수락 실패:", error);
+    }
   };
 
   return (
     <div className="main-teacher">
-
       {/* 헤더 */}
       <div className="header">
         <div className="logo" onClick={() => navigate("/teacher/main")}>CASS</div>
@@ -115,7 +136,7 @@ const TeacherMain = () => {
                     <li key={student.id} className="modal-student-item">
                       <div className="student-info">
                         <div className="student-name">{student.name}</div>
-                        <div className="student-username">@{student.username}</div>
+                        <div className="student-username">#{student.username}</div>
                       </div>
                       <div className="student-actions">
                         <button
@@ -167,7 +188,10 @@ const TeacherMain = () => {
           <ul className="student-list">
             {matchingStudents.map((student) => (
               <li key={student.id} className="student-item">
-                <div className="student-name">{student.name}</div>
+                <div className="student-info">
+                  <span className="student-name">{student.name}</span>
+                  <span className="student-username">#{student.username}</span>
+                </div>
               </li>
             ))}
             {matchingStudents.length === 0 && (

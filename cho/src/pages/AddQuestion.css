@@ -1,3 +1,8 @@
+.add-question {
+    background-color: #f5f5f5;
+    min-height: 100vh;
+}
+
 .user-icon {
     width: 60px;
     height: 60px;
@@ -193,15 +198,80 @@
     background-color: #da190b;
 }
 
-.no-requests, .no-items {
-    text-align: center;
-    padding: 11.5rem;
-    color: #666;
-    background-color: #f8f9fa;
-    border-radius: 8px;
-    margin-top: 0.1rem;
+.add-question-main {
+    display: flex;
+    gap: 2rem;
+    padding: 2rem;
+    height: calc(100vh - 50px - 4rem);
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
+.question-form {
+    padding: 2rem;
+    height: calc(100% - 70px);
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+    width: 90%;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: #333;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+.form-group input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.1);
+    outline: none;
+}
+
+.form-group input::placeholder {
+    color: #999;
+}
+
+.add-question-button {
+    width: 90%;
+    padding: 1rem;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 1rem;
+}
+
+.add-question-button:hover {
+    background-color: #45a049;
+}
+
+.add-question-button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+/* Inherit styles from MainTeacher.css */
 .main-teacher {
     background-color: #f5f5f5;
     min-height: 100vh;
@@ -225,16 +295,23 @@
     height: 500px;
 }
 
-.section h2 {
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.section-header h2 {
     font-size: 1.5rem;
+    margin: 0;
     height: 70px;
     display: flex;
     align-items: center;
     border-bottom: 2px solid #f0f0f0;
-    margin: 0;
 }
 
-.problem-list, .student-list {
+.problem-list {
     list-style: none;
     padding: 0;
     margin-top: 1rem;
@@ -255,10 +332,11 @@
     min-height: 30px;
 }
 
-.problem-item:hover {
-    background-color: #f0f0f0;
-    transform: translateY(-2px);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+.problem-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
 }
 
 .problem-id {
@@ -277,147 +355,34 @@
     white-space: nowrap;
 }
 
-.student-item {
-    padding: 0.75rem;
-    border-radius: 8px;
-    margin-bottom: 0.5rem;
+.no-items {
+    text-align: center;
+    padding: 11.5rem;
+    color: #666;
     background-color: #f8f9fa;
-    transition: all 0.2s;
-    border: 1px solid #eee;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    min-height: 30px;
+    border-radius: 8px;
+    margin-top: 0.1rem;
 }
 
-.student-info {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-}
-
-/* 스크롤바 스타일링 */
+/* Scrollbar styling */
 .problem-list::-webkit-scrollbar,
-.student-list::-webkit-scrollbar,
-.modal-student-list::-webkit-scrollbar {
+.question-form::-webkit-scrollbar {
     width: 6px;
 }
 
 .problem-list::-webkit-scrollbar-track,
-.student-list::-webkit-scrollbar-track,
-.modal-student-list::-webkit-scrollbar-track {
+.question-form::-webkit-scrollbar-track {
     background: #f1f1f1;
     border-radius: 3px;
 }
 
 .problem-list::-webkit-scrollbar-thumb,
-.student-list::-webkit-scrollbar-thumb,
-.modal-student-list::-webkit-scrollbar-thumb {
+.question-form::-webkit-scrollbar-thumb {
     background: #ccc;
     border-radius: 3px;
 }
 
 .problem-list::-webkit-scrollbar-thumb:hover,
-.student-list::-webkit-scrollbar-thumb:hover,
-.modal-student-list::-webkit-scrollbar-thumb:hover {
+.question-form::-webkit-scrollbar-thumb:hover {
     background: #999;
-}
-
-.section-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 10px;
-}
-
-.section-header h2 {
-    margin: 0;
-}
-
-.search-input {
-    padding: 8px 12px;
-    border: 1px solid #e0e0e0;
-    border-radius: 6px;
-    font-size: 14px;
-    width: 200px;
-    transition: all 0.3s ease;
-    outline: none;
-}
-
-.search-input:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.1);
-}
-
-.search-input::placeholder {
-    color: #999;
-}
-
-.section-controls {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.edit-button {
-    padding: 8px 16px;
-    border: 1px solid #e0e0e0;
-    border-radius: 6px;
-    background-color: white;
-    color: #333;
-    font-size: 14px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.edit-button:hover {
-    background-color: #f5f5f5;
-}
-
-.edit-button.active {
-    background-color: #007bff;
-    color: white;
-    border-color: #007bff;
-}
-
-.edit-button.active:hover {
-    background-color: #0056b3;
-}
-
-.delete-button {
-    padding: 4px 12px;
-    border: none;
-    border-radius: 4px;
-    background-color: #ff4444;
-    color: white;
-    font-size: 14px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.delete-button:hover {
-    background-color: #cc0000;
-}
-
-.problem-info {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    flex: 1;
-}
-
-.add-button {
-    padding: 8px 16px;
-    border: 1px solid #4CAF50;
-    border-radius: 6px;
-    background-color: white;
-    color: #4CAF50;
-    font-size: 14px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.add-button:hover {
-    background-color: #4CAF50;
-    color: white;
 }

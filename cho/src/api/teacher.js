@@ -127,3 +127,33 @@ export const deleteStudent = async (username) => {
         throw error;
     }
 };
+
+export const addProblem = async (name, url) => {
+    try {
+        const token = localStorage.getItem('token');
+        const response = await fetch(`${API_BASE_URL}/api/teacher/add_problem`, {
+            method: 'POST',
+            headers: {
+                ...API_CONFIG.headers,
+                'Authorization': `Token ${token}`,
+            },
+            body: JSON.stringify({
+                name: name,
+                url: url
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error(`addProblem error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log(data);
+        return data;
+    }
+    catch (error) {
+        console.error('문제 추가 실패:', error);
+        throw error;
+    }
+};
+

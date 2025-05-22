@@ -199,7 +199,7 @@
     color: #666;
     background-color: #f8f9fa;
     border-radius: 8px;
-    margin-top: 1rem;
+    margin-top: 0.1rem;
 }
 
 .main-teacher {
@@ -242,7 +242,39 @@
     overflow-y: auto;
 }
 
-.problem-item, .student-item {
+.problem-item {
+    padding: 0.75rem;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+    background-color: #f8f9fa;
+    transition: all 0.2s;
+    border: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 30px;
+}
+
+.problem-item:hover {
+    background-color: #f0f0f0;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.problem-id {
+    color: #666;
+    font-size: 1rem;
+    min-width: 60px;
+}
+
+.problem-title {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #333;
+    flex: 1;
+}
+
+.student-item {
     padding: 0.75rem;
     border-radius: 8px;
     margin-bottom: 0.5rem;
@@ -252,23 +284,13 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    min-height: 30px;
 }
 
-.problem-item:hover, .student-item:hover {
-    background-color: #f0f0f0;
-    transform: translateY(-2px);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-}
-
-.problem-title, .student-info {
-    font-size: 1.1rem;
-    font-weight: 500;
-    color: #333;
-}
-
-.student-name {
-    font-size: 1.1rem;
-    font-weight: 500;
+.student-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
 }
 
 /* 스크롤바 스타일링 */
@@ -296,4 +318,103 @@
 .student-list::-webkit-scrollbar-thumb:hover,
 .modal-student-list::-webkit-scrollbar-thumb:hover {
     background: #999;
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.section-header h2 {
+    margin: 0;
+}
+
+.search-input {
+    padding: 8px 12px;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    font-size: 14px;
+    width: 200px;
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+.search-input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.1);
+}
+
+.search-input::placeholder {
+    color: #999;
+}
+
+.section-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.edit-button {
+    padding: 8px 16px;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    background-color: white;
+    color: #333;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.edit-button:hover {
+    background-color: #f5f5f5;
+}
+
+.edit-button.active {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+.edit-button.active:hover {
+    background-color: #0056b3;
+}
+
+.delete-button {
+    padding: 4px 12px;
+    border: none;
+    border-radius: 4px;
+    background-color: #ff4444;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.delete-button:hover {
+    background-color: #cc0000;
+}
+
+.problem-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+}
+
+.add-button {
+    padding: 8px 16px;
+    border: 1px solid #4CAF50;
+    border-radius: 6px;
+    background-color: white;
+    color: #4CAF50;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.add-button:hover {
+    background-color: #4CAF50;
+    color: white;
 }

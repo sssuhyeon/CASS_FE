@@ -8,7 +8,6 @@ export const getDataTeacher = async () => {
             headers: {
                 ...API_CONFIG.headers,
                 'Authorization': `Token ${token}`,
-                'Content-Type': 'application/json'
             }
         });
 
@@ -29,15 +28,14 @@ export const getDataTeacher = async () => {
     }
 }; 
 
-export const matchingAccept = async (studentId) => {
+export const matchingAccept = async (username) => {
     try {
         const token = localStorage.getItem('token');
-        const response = await fetch(`${API_BASE_URL}/api/teacher/m_accept/${studentId}`, {
+        const response = await fetch(`${API_BASE_URL}/api/teacher/m_accept/${username}`, {
             method: 'POST',
             headers: {
                 ...API_CONFIG.headers,
                 'Authorization': `Token ${token}`,
-                'Content-Type': 'application/json'
             }
         });
 
@@ -55,11 +53,11 @@ export const matchingAccept = async (studentId) => {
     }
 };
 
-export const matchingReject = async (studentId) => {
+export const matchingReject = async (username) => {
     try {
         const token = localStorage.getItem('token');
-        const response = await fetch(`${API_BASE_URL}/api/teacher/m_reject/${studentId}`, {
-            method: 'POST',
+        const response = await fetch(`${API_BASE_URL}/api/teacher/m_reject/${username}`, {
+            method: 'DELETE',
             headers: {
                 ...API_CONFIG.headers,
                 'Authorization': `Token ${token}`,
@@ -76,6 +74,56 @@ export const matchingReject = async (studentId) => {
     }
     catch (error) {
         console.error('요청 거절 실패:', error);
+        throw error;
+    }
+};
+
+export const deleteProblem = async (problemId) => {
+    try {
+        const token = localStorage.getItem('token');
+        const response = await fetch(`${API_BASE_URL}/api/teacher/delete_problem/${problemId}`, {
+            method: 'DELETE',
+            headers: {
+                ...API_CONFIG.headers,
+                'Authorization': `Token ${token}`,
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error(`deleteProblem error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log(data);
+        return data;
+    }
+    catch (error) {
+        console.error('문제 삭제 실패:', error);
+        throw error;
+    }
+};
+
+export const deleteStudent = async (username) => {
+    try {
+        const token = localStorage.getItem('token');
+        const response = await fetch(`${API_BASE_URL}/api/teacher/delete_student/${username}`, {
+            method: 'DELETE',
+            headers: {
+                ...API_CONFIG.headers,
+                'Authorization': `Token ${token}`,
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error(`deleteStudent error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log(data);
+        return data;
+    }
+    catch (error) {
+        console.error('학생 삭제 실패:', error);
         throw error;
     }
 };

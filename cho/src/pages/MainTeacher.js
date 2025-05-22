@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getDataTeacher, matchingAccept, matchingReject } from "../api/teacher";
+import { getDataTeacher, matchingAccept, matchingReject, deleteStudent } from "../api/teacher";
 import userIcon from "../img/user_icon.png";
 import "../pages/MainTeacher.css";
 
@@ -8,7 +8,13 @@ const TeacherMain = () => {
   const [pendingStudents, setPendingStudents] = useState([]);
   const [matchingStudents, setMatchingStudents] = useState([]);
   const [problems, setProblems] = useState([]);
+
   const [showModal, setShowModal] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [isProblemEditMode, setIsProblemEditMode] = useState(false);
+
+  // 학생 검색
+  const [studentSearch, setStudentSearch] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -35,16 +41,15 @@ const TeacherMain = () => {
   }, [navigate]);
 
   // 학생 등록 요청 수락
-  const handleAcceptStudent = async (studentId) => {
+  const handleAcceptStudent = async (username) => {
     try {
-      const data = await matchingAccept(studentId);
+      const data = await matchingAccept(username);
 
       if (data.success === 0) {
         alert(data.message);
         return;
       }
 
-      alert(data.message);
       const updatedData = await getDataTeacher();
 
       setPendingStudents(updatedData.pending_students || []);
@@ -57,16 +62,15 @@ const TeacherMain = () => {
   };
 
   // 학생 등록 요청 거절
-  const handleRejectStudent = async (studentId) => {
+  const handleRejectStudent = async (username) => {
     try {
-      const data = await matchingReject(studentId);
+      const data = await matchingReject(username);
 
       if (data.success === 0) {
         alert(data.message);
         return;
       }
 
-      alert(data.message);
       const updatedData = await getDataTeacher();
 
       setPendingStudents(updatedData.pending_students || []);
@@ -82,7 +86,7 @@ const TeacherMain = () => {
   const handleAcceptAllStudents = async () => {
     try {
       for (const student of pendingStudents) {
-        await matchingAccept(student.id);
+        await matchingAccept(student.username);
       }
   
       // 한 번만 데이터 갱신
@@ -95,6 +99,44 @@ const TeacherMain = () => {
       console.error("전체 학생 수락 실패:", error);
     }
   };
+
+  // 학생 삭제 처리 함수
+  const handleDeleteStudent = async (username) => {
+    if (window.confirm("정말로 이 학생을 삭제하시겠습니까?")) {
+      try {
+        const response = await deleteStudent(username);
+        if (response.success) {
+          const updatedData = await getDataTeacher();
+          setMatchingStudents((prevStudents) =>
+            prevStudents.filter((student) => student.username !== username)
+          );
+          // setMatchingStudents(updatedData.matching_students || []);
+          setIsEditMode(true);
+        }
+        console.log("학생 삭제:", username);
+      } catch (error) {
+        console.error("학생 삭제 실패:", error);
+      }
+    }
+  };
+
+  // 문제 삭제 처리 함수
+  const handleDeleteProblem = async (problemId) => {
+    if (window.confirm("정말로 이 문제를 삭제하시겠습니까?")) {
+      try {
+        // TODO: API 호출 부분 구현 필요
+        console.log("문제 삭제:", problemId);
+      } catch (error) {
+        console.error("문제 삭제 실패:", error);
+      }
+    }
+  };
+
+  // 학생 검색
+  const filteredStudents = matchingStudents.filter(student =>
+    student.name.toLowerCase().includes(studentSearch.toLowerCase()) ||
+    student.username.toLowerCase().includes(studentSearch.toLowerCase())
+  );
 
   return (
     <div className="main-teacher">
@@ -141,13 +183,13 @@ const TeacherMain = () => {
                       <div className="student-actions">
                         <button
                           className="accept-button"
-                          onClick={() => handleAcceptStudent(student.id)}
+                          onClick={() => handleAcceptStudent(student.username)}
                         >
                           수락
                         </button>
                         <button
                           className="reject-button"
-                          onClick={() => handleRejectStudent(student.id)}
+                          onClick={() => handleRejectStudent(student.username)}
                         >
                           거절
                         </button>
@@ -169,11 +211,35 @@ const TeacherMain = () => {
       <div className="teacherMain">
         {/* 왼쪽 섹션 - 문제 리스트 */}
         <div className="section">
-          <h2>문제 리스트</h2>
+          <div className="section-header">
+            <h2>문제 리스트</h2>
+            <div className="section-controls">
+              <button
+                className={`edit-button ${isProblemEditMode ? 'active' : ''}`}
+                onClick={() => setIsProblemEditMode(!isProblemEditMode)}
+              >
+                {isProblemEditMode ? '수정 완료' : '편집'}
+              </button>
+              <button className="add-button">
+                추가
+              </button>
+            </div>
+          </div>
           <ul className="problem-list">
             {problems.map((problem) => (
               <li key={problem.id} className="problem-item">
-                <div className="problem-title">{problem.title}</div>
+                <div className="problem-info">
+                  <span className="problem-id">#{problem.id}</span>
+                  <span className="problem-title">{problem.title}</span>
+                </div>
+                {isProblemEditMode && (
+                  <button
+                    className="delete-button"
+                    onClick={() => handleDeleteProblem(problem.id)}
+                  >
+                    삭제
+                  </button>
+                )}
               </li>
             ))}
             {problems.length === 0 && (
@@ -184,18 +250,45 @@ const TeacherMain = () => {
 
         {/* 오른쪽 섹션 - 수강 학생 */}
         <div className="section">
-          <h2>수강 학생</h2>
+          <div className="section-header">
+            <h2>수강 학생</h2>
+            <div className="section-controls">
+              <input
+                type="text"
+                placeholder="학생 검색..."
+                value={studentSearch}
+                onChange={(e) => setStudentSearch(e.target.value)}
+                className="search-input"
+              />
+              <button
+                className={`edit-button ${isEditMode ? 'active' : ''}`}
+                onClick={() => setIsEditMode(!isEditMode)}
+              >
+                {isEditMode ? '수정 완료' : '편집'}
+              </button>
+            </div>
+          </div>
           <ul className="student-list">
-            {matchingStudents.map((student) => (
-              <li key={student.id} className="student-item">
+            {filteredStudents.map((student) => (
+              <li key={student.username} className="student-item">
                 <div className="student-info">
                   <span className="student-name">{student.name}</span>
                   <span className="student-username">#{student.username}</span>
                 </div>
+                {isEditMode && (
+                  <button
+                    className="delete-button"
+                    onClick={() => handleDeleteStudent(student.username)}
+                  >
+                    삭제
+                  </button>
+                )}
               </li>
             ))}
-            {matchingStudents.length === 0 && (
-              <div className="no-items">등록된 학생이 없습니다.</div>
+            {filteredStudents.length === 0 && (
+              <div className="no-items">
+                {matchingStudents.length === 0 ? "등록된 학생이 없습니다." : "검색 결과가 없습니다."}
+              </div>
             )}
           </ul>
         </div>

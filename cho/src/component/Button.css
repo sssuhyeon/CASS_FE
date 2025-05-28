@@ -1,0 +1,45 @@
+.Button {
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    font-size: 14px;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.Button_default {
+    width: 100%;
+    background-color: black;
+    color: white;
+}
+
+.Button_disabled {
+    background-color: #ccc;
+    color: 666;
+    cursor: not-allowed;
+}
+
+.Button_teacher {
+    border: 0.5px solid #282828;
+    color: black;
+    background-color: white;
+    height: 47.6px;
+    width: 81px;
+}
+
+.Button_student {
+    border: 0.5px solid #282828;
+    color: black;
+    background-color: white;
+    height: 47.6px;
+    width: 81px;
+}
+
+.Button_selected {
+    background-color: black;
+    color: white;
+}
